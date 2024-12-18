@@ -37,19 +37,24 @@
         const addSoundButton = document.getElementById('addSound');
         const soundList = document.getElementById('soundList');
 
+        // Load sounds from localStorage on page load
+        window.addEventListener('load', () => {
+            const savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
+            savedSounds.forEach(sound => {
+                addSoundToList(sound.name, sound.url);
+            });
+        });
+
+        // Add sound event
         addSoundButton.addEventListener('click', () => {
             const file = fileInput.files[0];
             if (file) {
                 const soundUrl = URL.createObjectURL(file);
                 const soundName = file.name;
 
-                const soundItem = document.createElement('div');
-                soundItem.className = 'sound-item';
-                soundItem.innerHTML = `
-                    <span>${soundName}</span>
-                    <audio controls src="${soundUrl}"></audio>
-                `;
-                soundList.appendChild(soundItem);
+                // Add sound to the list and localStorage
+                addSoundToList(soundName, soundUrl);
+                saveSoundToStorage(soundName, soundUrl);
 
                 // Clear the file input
                 fileInput.value = '';
@@ -57,6 +62,24 @@
                 alert('Please select a sound file first!');
             }
         });
+
+        // Function to add sound to the list
+        function addSoundToList(name, url) {
+            const soundItem = document.createElement('div');
+            soundItem.className = 'sound-item';
+            soundItem.innerHTML = `
+                <span>${name}</span>
+                <audio controls src="${url}"></audio>
+            `;
+            soundList.appendChild(soundItem);
+        }
+
+        // Function to save sound metadata to localStorage
+        function saveSoundToStorage(name, url) {
+            const savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
+            savedSounds.push({ name, url });
+            localStorage.setItem('sounds', JSON.stringify(savedSounds));
+        }
     </script>
 </body>
 
