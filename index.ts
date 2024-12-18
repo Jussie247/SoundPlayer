@@ -1,13 +1,15 @@
-// app.ts
-
 // Get references to the DOM elements
 const addSoundButton = document.getElementById('addSoundButton') as HTMLButtonElement;
 const audioFileInput = document.getElementById('audioFileInput') as HTMLInputElement;
 const audioList = document.getElementById('audioList') as HTMLElement;
 const audioPlayer = document.getElementById('audioPlayer') as HTMLAudioElement;
 
-// Function to create an audio file list item
-function createAudioFileItem(file: File) {
+/**
+ * Creates an audio file list item with a play button.
+ * @param file The audio file to create the item for.
+ * @returns The HTML element representing the audio file item.
+ */
+function createAudioFileItem(file: File): HTMLElement {
     const fileItem = document.createElement('div');
     fileItem.classList.add('audio-file-item');
 
@@ -29,11 +31,14 @@ function createAudioFileItem(file: File) {
     return fileItem;
 }
 
-// Function to play the selected audio file
-function playAudio(file: File) {
-    const audioUrl = URL.createObjectURL(file);
-    audioPlayer.src = audioUrl;
-    audioPlayer.play();
+/**
+ * Plays the selected audio file in the audio player.
+ * @param file The audio file to play.
+ */
+function playAudio(file: File): void {
+    const audioUrl = URL.createObjectURL(file); // Generate a temporary URL for the file
+    audioPlayer.src = audioUrl; // Set the source of the audio player
+    audioPlayer.play(); // Play the audio
 }
 
 // Event listener for "Add Sound" button click
@@ -43,11 +48,12 @@ addSoundButton.addEventListener('click', () => {
 
 // Event listener for file input change
 audioFileInput.addEventListener('change', (event: Event) => {
-    const files = (event.target as HTMLInputElement).files;
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
 
     if (files) {
-        // Append selected files to the list
-        Array.from(files).forEach(file => {
+        // Iterate through the selected files and create list items
+        Array.from(files).forEach((file: File) => {
             const fileItem = createAudioFileItem(file);
             audioList.appendChild(fileItem);
         });

@@ -6,17 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Player</title>
     <link rel="stylesheet" href="index.css">
-    <script src="index.js"></script>
+    <script src="index.js" defer></script>
 </head>
 
 <body>
     <div class="audio-player-container">
         <h1>Audio Player</h1>
+        <!-- "Add Sound" button -->
         <button id="addSoundButton">Add Sound</button>
+        <!-- Hidden file input -->
         <input type="file" id="audioFileInput" accept="audio/*" multiple hidden />
+        <!-- Container for audio files -->
         <div id="audioList" class="audio-list"></div>
+        <!-- Audio player -->
         <audio id="audioPlayer" controls></audio>
     </div>
+
 
 </body>
 

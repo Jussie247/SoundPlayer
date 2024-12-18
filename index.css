@@ -1,4 +1,4 @@
-/* styles.css */
+/* General page styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -10,6 +10,7 @@ body {
     background-color: #f0f0f0;
 }
 
+/* Audio player container */
 .audio-player-container {
     background-color: white;
     border-radius: 8px;
@@ -20,11 +21,13 @@ body {
     max-width: 600px;
 }
 
+/* Title styling */
 h1 {
     font-size: 24px;
     margin-bottom: 20px;
 }
 
+/* Button styling */
 button {
     margin: 10px 0;
     padding: 10px 20px;
@@ -40,6 +43,7 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* List of audio files */
 #audioList {
     margin-top: 20px;
     max-height: 300px;
@@ -56,6 +60,7 @@ button:hover {
     gap: 10px;
 }
 
+/* Audio file item styling */
 .audio-file-item {
     display: flex;
     justify-content: space-between;
@@ -74,7 +79,7 @@ button:hover {
 .audio-file-item button {
     padding: 5px 10px;
     font-size: 14px;
-    background-color: #dc3545;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 3px;
@@ -82,5 +87,5 @@ button:hover {
 }
 
 .audio-file-item button:hover {
-    background-color: #c82333;
+    background-color: #218838;
 }

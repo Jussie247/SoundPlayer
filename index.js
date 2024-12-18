@@ -1,11 +1,14 @@
 "use strict";
-// app.ts
 // Get references to the DOM elements
 const addSoundButton = document.getElementById('addSoundButton');
 const audioFileInput = document.getElementById('audioFileInput');
 const audioList = document.getElementById('audioList');
 const audioPlayer = document.getElementById('audioPlayer');
-// Function to create an audio file list item
+/**
+ * Creates an audio file list item with a play button.
+ * @param file The audio file to create the item for.
+ * @returns The HTML element representing the audio file item.
+ */
 function createAudioFileItem(file) {
     const fileItem = document.createElement('div');
     fileItem.classList.add('audio-file-item');
@@ -23,11 +26,14 @@ function createAudioFileItem(file) {
     fileItem.appendChild(playButton);
     return fileItem;
 }
-// Function to play the selected audio file
+/**
+ * Plays the selected audio file in the audio player.
+ * @param file The audio file to play.
+ */
 function playAudio(file) {
-    const audioUrl = URL.createObjectURL(file);
-    audioPlayer.src = audioUrl;
-    audioPlayer.play();
+    const audioUrl = URL.createObjectURL(file); // Generate a temporary URL for the file
+    audioPlayer.src = audioUrl; // Set the source of the audio player
+    audioPlayer.play(); // Play the audio
 }
 // Event listener for "Add Sound" button click
 addSoundButton.addEventListener('click', () => {
@@ -35,10 +41,11 @@ addSoundButton.addEventListener('click', () => {
 });
 // Event listener for file input change
 audioFileInput.addEventListener('change', (event) => {
-    const files = event.target.files;
+    const target = event.target;
+    const files = target.files;
     if (files) {
-        // Append selected files to the list
-        Array.from(files).forEach(file => {
+        // Iterate through the selected files and create list items
+        Array.from(files).forEach((file) => {
             const fileItem = createAudioFileItem(file);
             audioList.appendChild(fileItem);
         });
