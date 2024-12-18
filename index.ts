@@ -136,5 +136,4 @@ function initialize(): void {
     });
 }
 
-// Initialize the application
 initialize();

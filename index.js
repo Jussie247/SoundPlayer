@@ -122,5 +122,4 @@ function initialize() {
         createAudioFileItemFromStorage(file.name, file.dataUrl);
     });
 }
-// Initialize the application
 initialize();
