@@ -8,24 +8,32 @@ const audioPlayer = document.getElementById('audioPlayer') as HTMLAudioElement;
 const LOCAL_STORAGE_KEY = 'audioFiles';
 
 /**
- * Stores the file list in localStorage.
- * @param files An array of file objects to store.
+ * Audio file type for localStorage
  */
-function saveToLocalStorage(files: { name: string; dataUrl: string }[]): void {
+type StoredAudioFile = {
+    name: string;
+    dataUrl: string;
+};
+
+/**
+ * Stores the file list in localStorage.
+ * @param files An array of audio file objects to store.
+ */
+function saveToLocalStorage(files: StoredAudioFile[]): void {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(files));
 }
 
 /**
  * Loads the audio files from localStorage.
- * @returns An array of file objects stored in localStorage.
+ * @returns An array of stored audio files.
  */
-function loadFromLocalStorage(): { name: string; dataUrl: string }[] {
+function loadFromLocalStorage(): StoredAudioFile[] {
     const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
     return storedData ? JSON.parse(storedData) : [];
 }
 
 /**
- * Creates an audio file list item with a play button.
+ * Creates and displays an audio file item from localStorage.
  * @param fileName The name of the audio file.
  * @param fileDataUrl The data URL of the audio file.
  */
@@ -52,36 +60,30 @@ function createAudioFileItemFromStorage(fileName: string, fileDataUrl: string): 
 }
 
 /**
- * Creates an audio file list item with a play button.
+ * Creates a new audio file item and saves it to localStorage.
  * @param file The audio file to create the item for.
- * @returns The HTML element representing the audio file item.
  */
-function createAudioFileItem(file: File): HTMLElement {
-    const fileItem = document.createElement('div');
-    fileItem.classList.add('audio-file-item');
+function handleNewFile(file: File): void {
+    const fileReader = new FileReader();
 
-    // Display the file name
-    const fileName = document.createElement('span');
-    fileName.textContent = file.name;
+    fileReader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
 
-    // Create a play button
-    const playButton = document.createElement('button');
-    playButton.textContent = 'Play';
-    playButton.addEventListener('click', () => {
-        const audioUrl = URL.createObjectURL(file);
-        playAudio(audioUrl);
-    });
+        // Add the file to localStorage
+        const audioFiles = loadFromLocalStorage();
+        audioFiles.push({ name: file.name, dataUrl });
+        saveToLocalStorage(audioFiles);
 
-    // Append elements to the file item
-    fileItem.appendChild(fileName);
-    fileItem.appendChild(playButton);
+        // Create and append the audio file item
+        createAudioFileItemFromStorage(file.name, dataUrl);
+    };
 
-    return fileItem;
+    fileReader.readAsDataURL(file); // Read file as data URL
 }
 
 /**
  * Plays the selected audio file in the audio player.
- * @param audioUrl The data URL or object URL of the audio file.
+ * @param audioUrl The data URL of the audio file.
  */
 function playAudio(audioUrl: string): void {
     audioPlayer.src = audioUrl; // Set the source of the audio player
@@ -98,28 +100,13 @@ addSoundButton.addEventListener('click', () => {
 /**
  * Event listener for file input change.
  */
-audioFileInput.addEventListener('change', async (event: Event) => {
+audioFileInput.addEventListener('change', (event: Event) => {
     const target = event.target as HTMLInputElement;
     const files = target.files;
 
     if (files) {
-        const audioFiles = loadFromLocalStorage(); // Load existing files from localStorage
-
-        Array.from(files).forEach(async (file: File) => {
-            const fileReader = new FileReader();
-
-            fileReader.onload = (e) => {
-                const dataUrl = e.target?.result as string;
-
-                // Add the file to localStorage
-                audioFiles.push({ name: file.name, dataUrl });
-                saveToLocalStorage(audioFiles);
-
-                // Create and append the audio file item
-                createAudioFileItemFromStorage(file.name, dataUrl);
-            };
-
-            fileReader.readAsDataURL(file); // Read file as data URL
+        Array.from(files).forEach((file: File) => {
+            handleNewFile(file);
         });
     }
 });
@@ -136,4 +123,5 @@ function initialize(): void {
     });
 }
 
+// Initialize the application
 initialize();
