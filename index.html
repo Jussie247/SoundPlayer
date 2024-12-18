@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .sound-list {
+            margin-top: 20px;
+        }
+
+        .sound-item {
+            margin-bottom: 10px;
+        }
+
+        .sound-item button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sound Player</h1>
+    <input type="file" id="fileInput" accept="audio/*">
+    <button id="addSound">Add Sound</button>
+
+    <div class="sound-list" id="soundList"></div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const addSoundButton = document.getElementById('addSound');
+        const soundList = document.getElementById('soundList');
+
+        addSoundButton.addEventListener('click', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const soundUrl = URL.createObjectURL(file);
+                const soundName = file.name;
+
+                const soundItem = document.createElement('div');
+                soundItem.className = 'sound-item';
+                soundItem.innerHTML = `
+                    <span>${soundName}</span>
+                    <audio controls src="${soundUrl}"></audio>
+                `;
+                soundList.appendChild(soundItem);
+
+                // Clear the file input
+                fileInput.value = '';
+            } else {
+                alert('Please select a sound file first!');
+            }
+        });
+    </script>
+</body>
+
+</html>
