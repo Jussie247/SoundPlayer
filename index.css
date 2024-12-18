@@ -1,91 +1,83 @@
-/* General page styling */
+/* General reset for cleaner styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
-/* Audio player container */
-.audio-player-container {
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 80%;
-    max-width: 600px;
-}
-
-/* Title styling */
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-/* Button styling */
-button {
-    margin: 10px 0;
+/* Style for the Add Sound button */
+#addSoundButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
     padding: 10px 20px;
     font-size: 16px;
-    color: white;
-    background-color: #007bff;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin: 20px;
 }
 
-button:hover {
+#addSoundButton:hover {
     background-color: #0056b3;
 }
 
-/* List of audio files */
+/* Audio list container */
 #audioList {
-    margin-top: 20px;
-    max-height: 300px;
-    overflow-y: auto;
+    margin: 20px;
+    padding: 10px;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px;
-    background-color: #f9f9f9;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.audio-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Audio file item styling */
+/* Individual audio file items */
 .audio-file-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: white;
-    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    border-bottom: 1px solid #ddd;
 }
 
-.audio-file-item:hover {
-    background-color: #f0f0f0;
+.audio-file-item:last-child {
+    border-bottom: none;
 }
 
+/* Buttons inside audio file items */
 .audio-file-item button {
-    padding: 5px 10px;
-    font-size: 14px;
     background-color: #28a745;
     color: white;
     border: none;
+    padding: 5px 10px;
+    font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
 }
 
 .audio-file-item button:hover {
     background-color: #218838;
+}
+
+/* Remove button styling */
+.audio-file-item button:nth-child(3) {
+    background-color: #dc3545;
+    margin-left: 10px;
+}
+
+.audio-file-item button:nth-child(3):hover {
+    background-color: #c82333;
+}
+
+/* Audio player styling */
+#audioPlayer {
+    display: block;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 500px;
 }

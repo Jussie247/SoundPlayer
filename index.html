@@ -14,12 +14,10 @@
         <h1>Audio Player</h1>
         <!-- "Add Sound" button -->
         <button id="addSoundButton">Add Sound</button>
-        <!-- Hidden file input -->
-        <input type="file" id="audioFileInput" accept="audio/*" multiple hidden />
-        <!-- Container for audio files -->
-        <div id="audioList" class="audio-list"></div>
-        <!-- Audio player -->
+        <input type="file" id="audioFileInput" accept="audio/*" style="display: none;" />
+        <div id="audioList"></div>
         <audio id="audioPlayer" controls></audio>
+
     </div>
 
 
