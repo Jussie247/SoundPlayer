@@ -70,6 +70,7 @@
             soundItem.innerHTML = `
                 <span>${name}</span>
                 <audio controls src="${url}"></audio>
+                <button onclick="deleteSound('${name}')">Delete</button>
             `;
             soundList.appendChild(soundItem);
         }
@@ -79,6 +80,17 @@
             const savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
             savedSounds.push({ name, url });
             localStorage.setItem('sounds', JSON.stringify(savedSounds));
+        }
+
+        // Function to delete sound
+        function deleteSound(name) {
+            let savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
+            savedSounds = savedSounds.filter(sound => sound.name !== name);
+            localStorage.setItem('sounds', JSON.stringify(savedSounds));
+
+            // Refresh the sound list
+            soundList.innerHTML = '';
+            savedSounds.forEach(sound => addSoundToList(sound.name, sound.url));
         }
     </script>
 </body>
