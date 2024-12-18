@@ -23,6 +23,7 @@ function loadFromLocalStorage() {
 }
 /**
  * Creates and displays an audio file item from localStorage.
+ * Adds a play button and a remove button.
  * @param fileName The name of the audio file.
  * @param fileDataUrl The data URL of the audio file.
  */
@@ -38,28 +39,18 @@ function createAudioFileItemFromStorage(fileName, fileDataUrl) {
     playButton.addEventListener('click', () => {
         playAudio(fileDataUrl);
     });
+    // Create a remove button
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove';
+    removeButton.addEventListener('click', () => {
+        removeAudio(fileName);
+        fileItem.remove();
+    });
     // Append elements to the file item
     fileItem.appendChild(fileNameElement);
     fileItem.appendChild(playButton);
+    fileItem.appendChild(removeButton);
     audioList.appendChild(fileItem);
-}
-/**
- * Creates a new audio file item and saves it to localStorage.
- * @param file The audio file to create the item for.
- */
-function handleNewFile(file) {
-    const fileReader = new FileReader();
-    fileReader.onload = (e) => {
-        var _a;
-        const dataUrl = (_a = e.target) === null || _a === void 0 ? void 0 : _a.result;
-        // Add the file to localStorage
-        const audioFiles = loadFromLocalStorage();
-        audioFiles.push({ name: file.name, dataUrl });
-        saveToLocalStorage(audioFiles);
-        // Create and append the audio file item
-        createAudioFileItemFromStorage(file.name, dataUrl);
-    };
-    fileReader.readAsDataURL(file); // Read file as data URL
 }
 /**
  * Plays the selected audio file in the audio player.
@@ -68,6 +59,39 @@ function handleNewFile(file) {
 function playAudio(audioUrl) {
     audioPlayer.src = audioUrl; // Set the source of the audio player
     audioPlayer.play(); // Play the audio
+}
+/**
+ * Removes an audio file from localStorage by name.
+ * @param fileName The name of the audio file to remove.
+ */
+function removeAudio(fileName) {
+    const audioFiles = loadFromLocalStorage();
+    const updatedFiles = audioFiles.filter((file) => file.name !== fileName);
+    saveToLocalStorage(updatedFiles);
+}
+/**
+ * Handles adding a new file by reading and storing it.
+ * @param file The audio file to add.
+ */
+function handleNewFile(file) {
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+        var _a;
+        const dataUrl = (_a = e.target) === null || _a === void 0 ? void 0 : _a.result;
+        const audioFiles = loadFromLocalStorage();
+        // Check if storage limit is exceeded
+        const totalSize = new Blob(audioFiles.map((file) => file.dataUrl)).size;
+        if (totalSize + dataUrl.length > 5 * 1024 * 1024) { // 5MB limit
+            alert('Storage limit exceeded! Remove some songs to add more.');
+            return;
+        }
+        // Add the file to localStorage
+        audioFiles.push({ name: file.name, dataUrl });
+        saveToLocalStorage(audioFiles);
+        // Create and append the audio file item
+        createAudioFileItemFromStorage(file.name, dataUrl);
+    };
+    fileReader.readAsDataURL(file); // Read file as data URL
 }
 /**
  * Event listener for "Add Sound" button click.
