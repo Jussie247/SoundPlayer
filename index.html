@@ -1,93 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sound Player</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        .sound-list {
-            margin-top: 20px;
-        }
-        .sound-item {
-            margin-bottom: 10px;
-        }
-        .sound-item button {
-            margin-left: 10px;
-        }
-    </style>
+    <title>Audio Player</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
 </head>
+
 <body>
-    <h1>Sound Player</h1>
-    <input type="file" id="fileInput" accept="audio/*">
-    <button id="addSound">Add Sound</button>
+    <div class="audio-player-container">
+        <h1>Audio Player</h1>
+        <input type="file" id="audioFileInput" accept="audio/*" multiple />
+        <div id="audioList"></div>
+        <audio id="audioPlayer" controls></audio>
+    </div>
 
-    <div class="sound-list" id="soundList"></div>
 
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const addSoundButton = document.getElementById('addSound');
-        const soundList = document.getElementById('soundList');
-
-        // Load sounds from localStorage on page load
-        window.addEventListener('load', () => {
-            const savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
-            savedSounds.forEach(sound => {
-                addSoundToList(sound.name, sound.data);
-            });
-        });
-
-        // Add sound event
-        addSoundButton.addEventListener('click', () => {
-            const file = fileInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const soundData = e.target.result;
-                    const soundName = file.name;
-
-                    // Add sound to the list and localStorage
-                    addSoundToList(soundName, soundData);
-                    saveSoundToStorage(soundName, soundData);
-                };
-                reader.readAsDataURL(file); // Converts the file to Base64
-            } else {
-                alert('Please select a sound file first!');
-            }
-        });
-
-        // Function to add sound to the list
-        function addSoundToList(name, data) {
-            const soundItem = document.createElement('div');
-            soundItem.className = 'sound-item';
-            soundItem.innerHTML = `
-                <span>${name}</span>
-                <audio controls src="${data}"></audio>
-                <button onclick="deleteSound('${name}')">Delete</button>
-            `;
-            soundList.appendChild(soundItem);
-        }
-
-        // Function to save sound metadata to localStorage
-        function saveSoundToStorage(name, data) {
-            const savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
-            savedSounds.push({ name, data });
-            localStorage.setItem('sounds', JSON.stringify(savedSounds));
-        }
-
-        // Function to delete sound
-        function deleteSound(name) {
-            let savedSounds = JSON.parse(localStorage.getItem('sounds')) || [];
-            savedSounds = savedSounds.filter(sound => sound.name !== name);
-            localStorage.setItem('sounds', JSON.stringify(savedSounds));
-
-            // Refresh the sound list
-            soundList.innerHTML = '';
-            savedSounds.forEach(sound => addSoundToList(sound.name, sound.data));
-        }
-    </script>
 </body>
+
 </html>
